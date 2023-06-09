@@ -337,6 +337,14 @@ func (parameter *CreateSubsysParameterFromSnapshot) MarshalJSON() ([]byte, error
 	return json.Marshal(_map)
 }
 
+func (parameter *CreateSubsysParameter) GetSourceVolumeName() string {
+	return utils.StringValue(parameter.srcVolumeName)
+}
+
+func (parameter *CreateSubsysParameter) GetSourceSnapshotName() string {
+	return utils.StringValue(parameter.snapshotName)
+}
+
 func (parameter *CreateSubsysParameterFromSnapshot) SetName(subsysName string) {
 	parameter.name = utils.String(subsysName)
 }
@@ -457,6 +465,14 @@ func (parameter *CreateSubsysParameterFromVolume) MarshalJSON() ([]byte, error) 
 	}
 
 	return json.Marshal(_map)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) GetSourceVolumeName() string {
+	return utils.StringValue(parameter.srcVolumeName)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) GetSourceSnapshotName() string {
+	return utils.StringValue(parameter.snapshotName)
 }
 
 func (parameter *CreateSubsysParameterFromVolume) SetName(subsysName string) {
