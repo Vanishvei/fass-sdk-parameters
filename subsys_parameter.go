@@ -266,9 +266,9 @@ func (parameter *CreateSubsysParameter) SetSharding(sharding int) {
 
 // ===========================================================================================================
 
-type CreateSubsysParameterFromSnapshot CreateSubsysParameter
+type CreateSubsysFromSnapshotParameter CreateSubsysParameter
 
-func (parameter *CreateSubsysParameterFromSnapshot) MarshalJSON() ([]byte, error) {
+func (parameter *CreateSubsysFromSnapshotParameter) MarshalJSON() ([]byte, error) {
 	if parameter.enableISCSI != nil && parameter.enableNVMeoF != nil {
 		parameter.protocolType = utils.String("all")
 	} else if parameter.enableISCSI != nil {
@@ -337,78 +337,78 @@ func (parameter *CreateSubsysParameterFromSnapshot) MarshalJSON() ([]byte, error
 	return json.Marshal(_map)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) GetVolumeName() string {
+func (parameter *CreateSubsysFromSnapshotParameter) GetVolumeName() string {
 	if parameter.volumeName != nil {
 		return utils.StringValue(parameter.volumeName)
 	}
 	return utils.StringValue(parameter.name)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) GetSourceVolumeName() string {
+func (parameter *CreateSubsysFromSnapshotParameter) GetSourceVolumeName() string {
 	return utils.StringValue(parameter.srcVolumeName)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) GetSourceSnapshotName() string {
+func (parameter *CreateSubsysFromSnapshotParameter) GetSourceSnapshotName() string {
 	return utils.StringValue(parameter.snapshotName)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetName(subsysName string) {
+func (parameter *CreateSubsysFromSnapshotParameter) SetName(subsysName string) {
 	parameter.name = utils.String(subsysName)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetPoolName(poolName string) {
+func (parameter *CreateSubsysFromSnapshotParameter) SetPoolName(poolName string) {
 	parameter.poolName = utils.String(poolName)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetVolumeName(volumeName string) {
+func (parameter *CreateSubsysFromSnapshotParameter) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) InheritQos() {
+func (parameter *CreateSubsysFromSnapshotParameter) InheritQos() {
 	parameter.inheritQos = utils.Bool(true)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetBpsMB(bps int) {
+func (parameter *CreateSubsysFromSnapshotParameter) SetBpsMB(bps int) {
 	parameter.bps = utils.Int(bps)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetIops(iops int) {
+func (parameter *CreateSubsysFromSnapshotParameter) SetIops(iops int) {
 	parameter.iops = utils.Int(iops)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetSharding(sharding int) {
+func (parameter *CreateSubsysFromSnapshotParameter) SetSharding(sharding int) {
 	parameter.shardingSize = utils.Int(sharding)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetSrcVolumeName(srcVolumeName string) {
+func (parameter *CreateSubsysFromSnapshotParameter) SetSrcVolumeName(srcVolumeName string) {
 	parameter.srcVolumeName = utils.String(srcVolumeName)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetSrcSnapshotName(srcSnapshotName string) {
+func (parameter *CreateSubsysFromSnapshotParameter) SetSrcSnapshotName(srcSnapshotName string) {
 	parameter.snapshotName = utils.String(srcSnapshotName)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) EnableISCSI() {
+func (parameter *CreateSubsysFromSnapshotParameter) EnableISCSI() {
 	parameter.enableISCSI = utils.Bool(true)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) EnableNVMeoF() {
+func (parameter *CreateSubsysFromSnapshotParameter) EnableNVMeoF() {
 	parameter.enableNVMeoF = utils.Bool(true)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetSectorSize512() {
+func (parameter *CreateSubsysFromSnapshotParameter) SetSectorSize512() {
 	parameter.sectorSize = utils.Int(512)
 }
 
-func (parameter *CreateSubsysParameterFromSnapshot) SetSectorSize4096() {
+func (parameter *CreateSubsysFromSnapshotParameter) SetSectorSize4096() {
 	parameter.sectorSize = utils.Int(4096)
 }
 
 // ==============================================================================================================
 
-type CreateSubsysParameterFromVolume CreateSubsysParameter
+type CreateSubsysFromVolumeParameter CreateSubsysParameter
 
-func (parameter *CreateSubsysParameterFromVolume) MarshalJSON() ([]byte, error) {
+func (parameter *CreateSubsysFromVolumeParameter) MarshalJSON() ([]byte, error) {
 	if parameter.enableISCSI != nil && parameter.enableNVMeoF != nil {
 		parameter.protocolType = utils.String("all")
 	} else if parameter.enableISCSI != nil {
@@ -474,66 +474,66 @@ func (parameter *CreateSubsysParameterFromVolume) MarshalJSON() ([]byte, error) 
 	return json.Marshal(_map)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) GetVolumeName() string {
+func (parameter *CreateSubsysFromVolumeParameter) GetVolumeName() string {
 	if parameter.volumeName != nil {
 		return utils.StringValue(parameter.volumeName)
 	}
 	return utils.StringValue(parameter.name)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) GetSourceVolumeName() string {
+func (parameter *CreateSubsysFromVolumeParameter) GetSourceVolumeName() string {
 	return utils.StringValue(parameter.srcVolumeName)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) GetSourceSnapshotName() string {
+func (parameter *CreateSubsysFromVolumeParameter) GetSourceSnapshotName() string {
 	return utils.StringValue(parameter.snapshotName)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetName(subsysName string) {
+func (parameter *CreateSubsysFromVolumeParameter) SetName(subsysName string) {
 	parameter.name = utils.String(subsysName)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetPoolName(poolName string) {
+func (parameter *CreateSubsysFromVolumeParameter) SetPoolName(poolName string) {
 	parameter.poolName = utils.String(poolName)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetVolumeName(volumeName string) {
+func (parameter *CreateSubsysFromVolumeParameter) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) InheritQos() {
+func (parameter *CreateSubsysFromVolumeParameter) InheritQos() {
 	parameter.inheritQos = utils.Bool(true)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetBpsMB(bps int) {
+func (parameter *CreateSubsysFromVolumeParameter) SetBpsMB(bps int) {
 	parameter.bps = utils.Int(bps)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetIops(iops int) {
+func (parameter *CreateSubsysFromVolumeParameter) SetIops(iops int) {
 	parameter.iops = utils.Int(iops)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetSharding(sharding int) {
+func (parameter *CreateSubsysFromVolumeParameter) SetSharding(sharding int) {
 	parameter.shardingSize = utils.Int(sharding)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetSrcVolumeName(srcVolumeName string) {
+func (parameter *CreateSubsysFromVolumeParameter) SetSrcVolumeName(srcVolumeName string) {
 	parameter.srcVolumeName = utils.String(srcVolumeName)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) EnableISCSI() {
+func (parameter *CreateSubsysFromVolumeParameter) EnableISCSI() {
 	parameter.enableISCSI = utils.Bool(true)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) EnableNVMeoF() {
+func (parameter *CreateSubsysFromVolumeParameter) EnableNVMeoF() {
 	parameter.enableNVMeoF = utils.Bool(true)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetSectorSize512() {
+func (parameter *CreateSubsysFromVolumeParameter) SetSectorSize512() {
 	parameter.sectorSize = utils.Int(512)
 }
 
-func (parameter *CreateSubsysParameterFromVolume) SetSectorSize4096() {
+func (parameter *CreateSubsysFromVolumeParameter) SetSectorSize4096() {
 	parameter.sectorSize = utils.Int(4096)
 }
 
