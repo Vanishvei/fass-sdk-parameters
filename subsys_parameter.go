@@ -39,7 +39,7 @@ type subsysExportUnexportParameter struct {
 
 type ExportSubsysParameter subsysExportUnexportParameter
 
-func (parameter ExportSubsysParameter) GetPath() string {
+func (parameter *ExportSubsysParameter) GetPath() string {
 	if parameter.subsysName == nil {
 		panic("parameter subsysName no set")
 	}
@@ -64,7 +64,7 @@ func (parameter *ExportSubsysParameter) SetSubsysName(subsysName string) {
 
 type UnexportSubsysParameter subsysExportUnexportParameter
 
-func (parameter UnexportSubsysParameter) GetPath() string {
+func (parameter *UnexportSubsysParameter) GetPath() string {
 	if parameter.subsysName == nil {
 		panic("parameter subsysName no set")
 	}
@@ -147,7 +147,7 @@ type CreateSubsysParameter struct {
 	enableNVMeoF  *bool
 }
 
-func (parameter CreateSubsysParameter) MarshalJSON() ([]byte, error) {
+func (parameter *CreateSubsysParameter) MarshalJSON() ([]byte, error) {
 	if parameter.enableISCSI != nil && parameter.enableNVMeoF != nil {
 		parameter.protocolType = utils.String("all")
 	} else if parameter.enableISCSI != nil {
@@ -167,20 +167,16 @@ func (parameter CreateSubsysParameter) MarshalJSON() ([]byte, error) {
 	if parameter.poolName == nil {
 		panic("parameter poolName no set")
 	}
+	if parameter.capacity == nil {
+		panic("parameter capacity no set")
+	}
 	if parameter.protocolType == nil {
 		panic("parameter protocolType no set")
 	}
 
-	if parameter.srcVolumeName != nil && parameter.snapshotName == nil {
-		panic("parameter srcSnapshotName no set")
-	}
-
-	if parameter.snapshotName != nil && parameter.srcVolumeName == nil {
-		panic("parameter srcVolumeName no set")
-	}
-
 	_map := map[string]interface{}{
 		"name":          *parameter.name,
+		"capacity":      *parameter.capacity,
 		"pool_name":     *parameter.poolName,
 		"protocol_type": *parameter.protocolType,
 	}
@@ -188,20 +184,13 @@ func (parameter CreateSubsysParameter) MarshalJSON() ([]byte, error) {
 	if parameter.bps != nil {
 		_map["bps"] = *parameter.bps
 	}
-	if parameter.capacity != nil {
-		_map["capacity"] = *parameter.capacity
-	}
-
-	if parameter.format != nil {
-		_map["format"] = *parameter.format
-	}
 
 	if parameter.iops != nil {
 		_map["iops"] = *parameter.iops
 	}
 
-	if parameter.inheritQos != nil {
-		_map["inherit_qos"] = *parameter.inheritQos
+	if parameter.format != nil {
+		_map["format"] = *parameter.format
 	}
 
 	if parameter.sectorSize != nil {
@@ -210,14 +199,6 @@ func (parameter CreateSubsysParameter) MarshalJSON() ([]byte, error) {
 
 	if parameter.sharding != nil {
 		_map["sharding"] = *parameter.sharding
-	}
-
-	if parameter.snapshotName != nil {
-		_map["snapshot_name"] = *parameter.snapshotName
-	}
-
-	if parameter.srcVolumeName != nil {
-		_map["src_volume_name"] = *parameter.srcVolumeName
 	}
 
 	if parameter.volumeName != nil {
@@ -231,12 +212,16 @@ func (parameter *CreateSubsysParameter) SetName(subsysName string) {
 	parameter.name = utils.String(subsysName)
 }
 
-func (parameter *CreateSubsysParameter) SetBpsMB(bps int) {
-	parameter.bps = utils.Int(bps)
+func (parameter *CreateSubsysParameter) SetVolumeName(volumeName string) {
+	parameter.volumeName = utils.String(volumeName)
 }
 
 func (parameter *CreateSubsysParameter) SetIops(iops int) {
 	parameter.iops = utils.Int(iops)
+}
+
+func (parameter *CreateSubsysParameter) SetBpsMB(bps int) {
+	parameter.bps = utils.Int(bps)
 }
 
 func (parameter *CreateSubsysParameter) SetCapacityGB(capacity int) {
@@ -253,10 +238,6 @@ func (parameter *CreateSubsysParameter) SetFormatROW() {
 
 func (parameter *CreateSubsysParameter) SetFormatRAW() {
 	parameter.format = utils.String("raw")
-}
-
-func (parameter *CreateSubsysParameter) InheritQos() {
-	parameter.inheritQos = utils.Bool(true)
 }
 
 func (parameter *CreateSubsysParameter) SetPoolName(poolName string) {
@@ -283,17 +264,250 @@ func (parameter *CreateSubsysParameter) SetSharding(sharding int) {
 	parameter.shardingSize = utils.Int(sharding)
 }
 
-func (parameter *CreateSubsysParameter) SetVolumeName(volumeName string) {
+// ===========================================================================================================
+
+type CreateSubsysParameterFromSnapshot CreateSubsysParameter
+
+func (parameter *CreateSubsysParameterFromSnapshot) MarshalJSON() ([]byte, error) {
+	if parameter.enableISCSI != nil && parameter.enableNVMeoF != nil {
+		parameter.protocolType = utils.String("all")
+	} else if parameter.enableISCSI != nil {
+		parameter.protocolType = utils.String("iSCSI")
+	} else if parameter.enableNVMeoF != nil {
+		parameter.protocolType = utils.String("NVMeoF")
+	}
+
+	if parameter.shardingSize != nil {
+		_sharding := fmt.Sprintf("%dG", *parameter.shardingSize)
+		parameter.sharding = utils.String(_sharding)
+	}
+
+	if parameter.name == nil {
+		panic("parameter subsysName no set")
+	}
+	if parameter.poolName == nil {
+		panic("parameter poolName no set")
+	}
+	if parameter.protocolType == nil {
+		panic("parameter protocolType no set")
+	}
+	if parameter.snapshotName == nil {
+		panic("parameter srcSnapshotName no set")
+	}
+	if parameter.srcVolumeName == nil {
+		panic("parameter srcVolumeName no set")
+	}
+
+	_map := map[string]interface{}{
+		"name":            *parameter.name,
+		"pool_name":       *parameter.poolName,
+		"protocol_type":   *parameter.protocolType,
+		"snapshot_name":   *parameter.snapshotName,
+		"src_volume_name": *parameter.srcVolumeName,
+	}
+
+	if parameter.bps != nil {
+		_map["bps"] = *parameter.bps
+	}
+
+	if parameter.format != nil {
+		_map["format"] = *parameter.format
+	}
+
+	if parameter.iops != nil {
+		_map["iops"] = *parameter.iops
+	}
+
+	if parameter.inheritQos != nil {
+		_map["inherit_qos"] = *parameter.inheritQos
+	}
+
+	if parameter.sectorSize != nil {
+		_map["sector_size"] = *parameter.sectorSize
+	}
+
+	if parameter.sharding != nil {
+		_map["sharding"] = *parameter.sharding
+	}
+
+	if parameter.volumeName != nil {
+		_map["volume_name"] = *parameter.volumeName
+	}
+
+	return json.Marshal(_map)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetName(subsysName string) {
+	parameter.name = utils.String(subsysName)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetPoolName(poolName string) {
+	parameter.poolName = utils.String(poolName)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *CreateSubsysParameter) SetSrcVolumeName(srcVolumeName string) {
+func (parameter *CreateSubsysParameterFromSnapshot) InheritQos() {
+	parameter.inheritQos = utils.Bool(true)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetBpsMB(bps int) {
+	parameter.bps = utils.Int(bps)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetIops(iops int) {
+	parameter.iops = utils.Int(iops)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetSharding(sharding int) {
+	parameter.shardingSize = utils.Int(sharding)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetSrcVolumeName(srcVolumeName string) {
 	parameter.srcVolumeName = utils.String(srcVolumeName)
 }
 
-func (parameter *CreateSubsysParameter) SetSrcSnapshotName(srcSnapshotName string) {
+func (parameter *CreateSubsysParameterFromSnapshot) SetSrcSnapshotName(srcSnapshotName string) {
 	parameter.snapshotName = utils.String(srcSnapshotName)
 }
+
+func (parameter *CreateSubsysParameterFromSnapshot) EnableISCSI() {
+	parameter.enableISCSI = utils.Bool(true)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) EnableNVMeoF() {
+	parameter.enableNVMeoF = utils.Bool(true)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetSectorSize512() {
+	parameter.sectorSize = utils.Int(512)
+}
+
+func (parameter *CreateSubsysParameterFromSnapshot) SetSectorSize4096() {
+	parameter.sectorSize = utils.Int(4096)
+}
+
+// ==============================================================================================================
+
+type CreateSubsysParameterFromVolume CreateSubsysParameter
+
+func (parameter *CreateSubsysParameterFromVolume) MarshalJSON() ([]byte, error) {
+	if parameter.enableISCSI != nil && parameter.enableNVMeoF != nil {
+		parameter.protocolType = utils.String("all")
+	} else if parameter.enableISCSI != nil {
+		parameter.protocolType = utils.String("iSCSI")
+	} else if parameter.enableNVMeoF != nil {
+		parameter.protocolType = utils.String("NVMeoF")
+	}
+
+	if parameter.shardingSize != nil {
+		_sharding := fmt.Sprintf("%dG", *parameter.shardingSize)
+		parameter.sharding = utils.String(_sharding)
+	}
+
+	if parameter.name == nil {
+		panic("parameter subsysName no set")
+	}
+	if parameter.poolName == nil {
+		panic("parameter poolName no set")
+	}
+	if parameter.protocolType == nil {
+		panic("parameter protocolType no set")
+	}
+	if parameter.srcVolumeName == nil {
+		panic("parameter srcVolumeName no set")
+	}
+
+	_map := map[string]interface{}{
+		"name":            *parameter.name,
+		"pool_name":       *parameter.poolName,
+		"protocol_type":   *parameter.protocolType,
+		"snapshot_name":   *parameter.name,
+		"src_volume_name": *parameter.srcVolumeName,
+	}
+
+	if parameter.bps != nil {
+		_map["bps"] = *parameter.bps
+	}
+
+	if parameter.format != nil {
+		_map["format"] = *parameter.format
+	}
+
+	if parameter.iops != nil {
+		_map["iops"] = *parameter.iops
+	}
+
+	if parameter.inheritQos != nil {
+		_map["inherit_qos"] = *parameter.inheritQos
+	}
+
+	if parameter.sectorSize != nil {
+		_map["sector_size"] = *parameter.sectorSize
+	}
+
+	if parameter.sharding != nil {
+		_map["sharding"] = *parameter.sharding
+	}
+
+	if parameter.volumeName != nil {
+		_map["volume_name"] = *parameter.volumeName
+	}
+
+	return json.Marshal(_map)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetName(subsysName string) {
+	parameter.name = utils.String(subsysName)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetPoolName(poolName string) {
+	parameter.poolName = utils.String(poolName)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetVolumeName(volumeName string) {
+	parameter.volumeName = utils.String(volumeName)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) InheritQos() {
+	parameter.inheritQos = utils.Bool(true)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetBpsMB(bps int) {
+	parameter.bps = utils.Int(bps)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetIops(iops int) {
+	parameter.iops = utils.Int(iops)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetSharding(sharding int) {
+	parameter.shardingSize = utils.Int(sharding)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetSrcVolumeName(srcVolumeName string) {
+	parameter.srcVolumeName = utils.String(srcVolumeName)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) EnableISCSI() {
+	parameter.enableISCSI = utils.Bool(true)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) EnableNVMeoF() {
+	parameter.enableNVMeoF = utils.Bool(true)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetSectorSize512() {
+	parameter.sectorSize = utils.Int(512)
+}
+
+func (parameter *CreateSubsysParameterFromVolume) SetSectorSize4096() {
+	parameter.sectorSize = utils.Int(4096)
+}
+
+// ==============================================================================================================
 
 type RetrieveSubsysAuthParameter struct {
 	subsysName *string
@@ -316,7 +530,7 @@ type SetSubsysAuthParameter struct {
 	groupName  *string
 }
 
-func (parameter SetSubsysAuthParameter) MarshalJSON() ([]byte, error) {
+func (parameter *SetSubsysAuthParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(map[string]string{"group_name": *parameter.groupName})
 }
 
@@ -370,7 +584,7 @@ type SetSubsysChapParameter struct {
 	accountName *string
 }
 
-func (parameter SetSubsysChapParameter) MarshalJSON() ([]byte, error) {
+func (parameter *SetSubsysChapParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(map[string]string{"account_name": *parameter.accountName})
 }
 

@@ -28,7 +28,7 @@ func (parameter *ListSnapshotParameter) SetPageSize(pageSize int) {
 	parameter.pageSize = utils.Int(pageSize)
 }
 
-func (parameter ListSnapshotParameter) SetPageNum(pageNum int) {
+func (parameter *ListSnapshotParameter) SetPageNum(pageNum int) {
 	parameter.pageNum = utils.Int(pageNum)
 }
 
@@ -105,7 +105,7 @@ type createDeleteSnapshotParameter struct {
 	snapshotName *string
 }
 
-func (parameter createDeleteSnapshotParameter) MarshalJSON() ([]byte, error) {
+func (parameter *createDeleteSnapshotParameter) MarshalJSON() ([]byte, error) {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}

@@ -48,7 +48,7 @@ func (parameter *CreateAccountParameter) SetPassword(password string) {
 	parameter.password = utils.String(password)
 }
 
-func (parameter CreateAccountParameter) MarshalJSON() ([]byte, error) {
+func (parameter *CreateAccountParameter) MarshalJSON() ([]byte, error) {
 	if parameter.accountName == nil {
 		panic("parameter accountName no set")
 	}
@@ -91,7 +91,7 @@ type AddQualifierToGroupParameter struct {
 	qualifierList []*string
 }
 
-func (parameter AddQualifierToGroupParameter) MarshalJSON() ([]byte, error) {
+func (parameter *AddQualifierToGroupParameter) MarshalJSON() ([]byte, error) {
 	_map := map[string]interface{}{
 		"host_name":      *parameter.hostName,
 		"qualifier_list": utils.StringSliceValue(parameter.qualifierList),
@@ -124,7 +124,7 @@ type RemoveQualifierFromGroupParameter struct {
 	qualifierList []*string
 }
 
-func (parameter RemoveQualifierFromGroupParameter) MarshalJSON() ([]byte, error) {
+func (parameter *RemoveQualifierFromGroupParameter) MarshalJSON() ([]byte, error) {
 	_map := map[string]interface{}{
 		"host_name":      *parameter.hostName,
 		"qualifier_list": utils.StringSliceValue(parameter.qualifierList),

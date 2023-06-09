@@ -128,11 +128,11 @@ func (parameter *SetQosOfVolumeParameter) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter SetQosOfVolumeParameter) SetIops(iops int) {
+func (parameter *SetQosOfVolumeParameter) SetIops(iops int) {
 	parameter.iops = utils.Int(iops)
 }
 
-func (parameter SetQosOfVolumeParameter) SetBpsMB(bps int) {
+func (parameter *SetQosOfVolumeParameter) SetBpsMB(bps int) {
 	parameter.bps = utils.Int(bps)
 }
 
