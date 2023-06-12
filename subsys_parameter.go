@@ -519,6 +519,7 @@ func (parameter *CreateSubsysFromVolumeParameter) SetSharding(sharding int) {
 
 func (parameter *CreateSubsysFromVolumeParameter) SetSrcVolumeName(srcVolumeName string) {
 	parameter.srcVolumeName = utils.String(srcVolumeName)
+	parameter.snapshotName = parameter.name
 }
 
 func (parameter *CreateSubsysFromVolumeParameter) EnableISCSI() {
