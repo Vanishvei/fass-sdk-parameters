@@ -20,6 +20,10 @@ type accountParameter struct {
 	accountName *string
 }
 
+func (parameter *accountParameter) GetAccountName() string {
+	return utils.StringValue(parameter.accountName)
+}
+
 func (parameter *accountParameter) SetAccountName(accountName string) {
 	parameter.accountName = utils.String(accountName)
 }
@@ -38,6 +42,14 @@ type DeleteAccountParameter = accountParameter
 type CreateAccountParameter struct {
 	accountName *string
 	password    *string
+}
+
+func (parameter *CreateAccountParameter) GetAccountName() string {
+	return utils.StringValue(parameter.accountName)
+}
+
+func (parameter *CreateAccountParameter) GetPassword() string {
+	return utils.StringValue(parameter.password)
 }
 
 func (parameter *CreateAccountParameter) SetAccountName(accountName string) {
@@ -70,6 +82,10 @@ type groupParameter struct {
 	groupName *string
 }
 
+func (parameter *groupParameter) GetGroupName() string {
+	return utils.StringValue(parameter.groupName)
+}
+
 func (parameter *groupParameter) SetGroupName(groupName string) {
 	parameter.groupName = utils.String(groupName)
 }
@@ -97,6 +113,18 @@ func (parameter *AddQualifierToGroupParameter) MarshalJSON() ([]byte, error) {
 		"qualifier_list": utils.StringSliceValue(parameter.qualifierList),
 	}
 	return json.Marshal(_map)
+}
+
+func (parameter *AddQualifierToGroupParameter) GetGroupName() string {
+	return utils.StringValue(parameter.groupName)
+}
+
+func (parameter *AddQualifierToGroupParameter) GetHostName() string {
+	return utils.StringValue(parameter.hostName)
+}
+
+func (parameter *AddQualifierToGroupParameter) GetQualifierList() []string {
+	return utils.StringSliceValue(parameter.qualifierList)
 }
 
 func (parameter *AddQualifierToGroupParameter) SetGroupName(groupName string) {
@@ -130,6 +158,18 @@ func (parameter *RemoveQualifierFromGroupParameter) MarshalJSON() ([]byte, error
 		"qualifier_list": utils.StringSliceValue(parameter.qualifierList),
 	}
 	return json.Marshal(_map)
+}
+
+func (parameter *RemoveQualifierFromGroupParameter) GetGroupName() string {
+	return utils.StringValue(parameter.groupName)
+}
+
+func (parameter *RemoveQualifierFromGroupParameter) GetHostName() string {
+	return utils.StringValue(parameter.hostName)
+}
+
+func (parameter *RemoveQualifierFromGroupParameter) GetQualifierList() []string {
+	return utils.StringSliceValue(parameter.qualifierList)
 }
 
 func (parameter *RemoveQualifierFromGroupParameter) SetGroupName(groupName string) {

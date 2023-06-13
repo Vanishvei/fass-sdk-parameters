@@ -17,6 +17,10 @@ type RetrievePoolParameter struct {
 	poolName *string
 }
 
+func (parameter *RetrievePoolParameter) GetPoolName() string {
+	return utils.StringValue(parameter.poolName)
+}
+
 func (parameter *RetrievePoolParameter) SetPoolName(poolName string) {
 	parameter.poolName = utils.String(poolName)
 }

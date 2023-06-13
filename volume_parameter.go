@@ -25,15 +25,23 @@ func (parameter *ExpandVolumeParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(map[string]string{"capacity": *parameter.capacity})
 }
 
+func (parameter *ExpandVolumeParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
+}
+
 func (parameter *ExpandVolumeParameter) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *ExpandVolumeParameter) SetCapacityGB(capacity int) {
+func (parameter *ExpandVolumeParameter) GetNewCapacity() string {
+	return utils.StringValue(parameter.capacity)
+}
+
+func (parameter *ExpandVolumeParameter) SetNewCapacityGB(capacity int) {
 	parameter.capacity = utils.String(fmt.Sprintf("%dg", capacity))
 }
 
-func (parameter *ExpandVolumeParameter) SetCapacityTB(capacity int) {
+func (parameter *ExpandVolumeParameter) SetNewCapacityTB(capacity int) {
 	parameter.capacity = utils.String(fmt.Sprintf("%dt", capacity))
 }
 
@@ -47,6 +55,10 @@ func (parameter *ExpandVolumeParameter) GetPath() string {
 
 type RetrieveVolumeParameter struct {
 	volumeName *string
+}
+
+func (parameter *RetrieveVolumeParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
 }
 
 func (parameter *RetrieveVolumeParameter) SetVolumeName(volumeName string) {
@@ -64,6 +76,10 @@ func (parameter *RetrieveVolumeParameter) GetPath() string {
 type DeleteVolumeParameter struct {
 	volumeName *string
 	isForce    *bool
+}
+
+func (parameter *DeleteVolumeParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
 }
 
 func (parameter *DeleteVolumeParameter) SetVolumeName(volumeName string) {
@@ -90,6 +106,10 @@ func (parameter *DeleteVolumeParameter) GetQuery() map[string]*string {
 
 type FlattenVolumeParameter struct {
 	volumeName *string
+}
+
+func (parameter *FlattenVolumeParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
 }
 
 func (parameter *FlattenVolumeParameter) SetVolumeName(volumeName string) {
@@ -124,6 +144,18 @@ func (parameter *SetQosOfVolumeParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(_map)
 }
 
+func (parameter *SetQosOfVolumeParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
+}
+
+func (parameter *SetQosOfVolumeParameter) GetIOPS() int {
+	return utils.IntValue(parameter.iops)
+}
+
+func (parameter *SetQosOfVolumeParameter) GetBPS() int {
+	return utils.IntValue(parameter.bps)
+}
+
 func (parameter *SetQosOfVolumeParameter) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
@@ -150,6 +182,10 @@ type flattenVolume struct {
 
 type GetFlattenVolumeProgress flattenVolume
 
+func (parameter *GetFlattenVolumeProgress) GetTaskId() string {
+	return utils.StringValue(parameter.taskId)
+}
+
 func (parameter *GetFlattenVolumeProgress) SetTaskId(taskId string) {
 	parameter.taskId = utils.String(taskId)
 }
@@ -162,6 +198,10 @@ func (parameter *GetFlattenVolumeProgress) GetPath() string {
 }
 
 type StopFlattenVolumeParameter flattenVolume
+
+func (parameter *StopFlattenVolumeParameter) GetTaskId() string {
+	return utils.StringValue(parameter.taskId)
+}
 
 func (parameter *StopFlattenVolumeParameter) SetTaskId(taskId string) {
 	parameter.taskId = utils.String(taskId)

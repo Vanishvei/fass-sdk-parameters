@@ -20,6 +20,18 @@ type ListSnapshotParameter struct {
 	pageNum    *int
 }
 
+func (parameter *ListSnapshotParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
+}
+
+func (parameter *ListSnapshotParameter) GetPageSize() int {
+	return utils.IntValue(parameter.pageSize)
+}
+
+func (parameter *ListSnapshotParameter) GetPageNum() int {
+	return utils.IntValue(parameter.pageNum)
+}
+
 func (parameter *ListSnapshotParameter) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
@@ -55,6 +67,14 @@ type RetrieveSnapshotParameter struct {
 	snapshotName *string
 }
 
+func (parameter *RetrieveSnapshotParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
+}
+
+func (parameter *RetrieveSnapshotParameter) GetSnapshotName() string {
+	return utils.StringValue(parameter.snapshotName)
+}
+
 func (parameter *RetrieveSnapshotParameter) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
@@ -78,6 +98,14 @@ func (parameter *RetrieveSnapshotParameter) GetPath() string {
 type DeleteSnapshotParameter struct {
 	volumeName   *string
 	snapshotName *string
+}
+
+func (parameter *DeleteSnapshotParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
+}
+
+func (parameter *DeleteSnapshotParameter) GetSnapshotName() string {
+	return utils.StringValue(parameter.volumeName)
 }
 
 func (parameter *DeleteSnapshotParameter) SetVolumeName(volumeName string) {
@@ -118,6 +146,14 @@ func (parameter *createDeleteSnapshotParameter) MarshalJSON() ([]byte, error) {
 		"volume_name":   parameter.volumeName,
 		"snapshot_name": parameter.snapshotName,
 	})
+}
+
+func (parameter *createDeleteSnapshotParameter) GetVolumeName() string {
+	return utils.StringValue(parameter.volumeName)
+}
+
+func (parameter *createDeleteSnapshotParameter) GetSnapshotName() string {
+	return utils.StringValue(parameter.volumeName)
 }
 
 func (parameter *createDeleteSnapshotParameter) SetVolumeName(volumeName string) {

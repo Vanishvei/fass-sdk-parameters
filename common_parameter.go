@@ -26,6 +26,14 @@ func (parameter *listParameter) SetPageNum(pageNum int) {
 	parameter.pageNum = utils.Int(pageNum)
 }
 
+func (parameter *listParameter) GetPageSize() int {
+	return utils.IntValue(parameter.pageSize)
+}
+
+func (parameter *listParameter) GetPageNum() int {
+	return utils.IntValue(parameter.pageNum)
+}
+
 func (parameter *listParameter) GetQuery() map[string]*string {
 	defaultPageNum := 1
 	defaultPageSize := 20
