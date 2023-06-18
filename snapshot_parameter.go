@@ -48,7 +48,7 @@ func (parameter *ListSnapshotParameter) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
-	return fmt.Sprintf("/snapshot/%s", *parameter.volumeName)
+	return fmt.Sprintf("snapshot/%s", *parameter.volumeName)
 }
 
 func (parameter *ListSnapshotParameter) GetQuery() map[string]*int {
