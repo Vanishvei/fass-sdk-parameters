@@ -50,7 +50,7 @@ func (parameter *ExpandVolumeParameter) GetPath() string {
 		panic("parameter volumeName no set")
 	}
 
-	return fmt.Sprintf("volume/%s", *parameter.volumeName)
+	return fmt.Sprintf("volume/%s/expand", *parameter.volumeName)
 }
 
 type RetrieveVolumeParameter struct {
@@ -173,7 +173,7 @@ func (parameter *SetQosOfVolumeParameter) GetPath() string {
 		panic("parameter volumeName no set")
 	}
 
-	return fmt.Sprintf("volume/%s", *parameter.volumeName)
+	return fmt.Sprintf("volume/%s/set_qos", *parameter.volumeName)
 }
 
 type flattenVolume struct {
