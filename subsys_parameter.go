@@ -208,11 +208,10 @@ func (parameter *CreateSubsysParameter) MarshalJSON() ([]byte, error) {
 	}
 
 	_map := map[string]interface{}{
-		"name":          *parameter.name,
-		"capacity":      *parameter.capacity,
-		"pool_name":     *parameter.poolName,
-		"volume_name":   *parameter.volumeName,
-		"protocol_type": *parameter.protocolType,
+		"name":        *parameter.name,
+		"capacity":    *parameter.capacity,
+		"pool_name":   *parameter.poolName,
+		"volume_name": *parameter.volumeName,
 	}
 
 	if parameter.bps != nil {
@@ -233,6 +232,10 @@ func (parameter *CreateSubsysParameter) MarshalJSON() ([]byte, error) {
 
 	if parameter.sharding != nil {
 		_map["sharding"] = *parameter.sharding
+	}
+
+	if parameter.protocolType != nil {
+		_map["protocol_type"] = *parameter.protocolType
 	}
 
 	return json.Marshal(_map)
