@@ -86,6 +86,9 @@ func (parameter *UnexportSubsysParameter) GetSubsysName() string {
 }
 
 func (parameter *UnexportSubsysParameter) GetProtocolType() string {
+	if parameter.protocolType == nil {
+		return "NoSet"
+	}
 	return utils.StringValue(parameter.protocolType)
 }
 
