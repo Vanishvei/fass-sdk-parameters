@@ -132,10 +132,10 @@ type SetQosOfVolumeParameter struct {
 
 func (parameter *SetQosOfVolumeParameter) MarshalJSON() ([]byte, error) {
 	_map := map[string]*int{}
-	if parameter.iops != nil {
+	if parameter.iops == nil {
 		panic("parameter iops no set")
 	}
-	if parameter.bps != nil {
+	if parameter.bps == nil {
 		panic("parameter bps no set")
 	}
 	_map["iops"] = parameter.iops
