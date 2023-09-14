@@ -64,6 +64,31 @@ func StringSliceValue(a []*string) []string {
 	return res
 }
 
+func Map(a map[string]string) *map[string]string {
+	if len(a) == 0 {
+		return nil
+	}
+	res := make(map[string]string)
+	for k, v := range a {
+		res[k] = v
+	}
+	return &res
+}
+
+func MapValue(a *map[string]string) map[string]string {
+	if a == nil {
+		return nil
+	}
+	res := make(map[string]string)
+	for k, v := range *a {
+		res[k] = v
+	}
+	if len(res) == 0 {
+		return nil
+	}
+	return res
+}
+
 func DefaultNumber(reaNum, defaultNum *int) *int {
 	if reaNum == nil {
 		return defaultNum

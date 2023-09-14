@@ -13,19 +13,19 @@ import (
 	"github.com/Vanishvei/fass-sdk-parameters/utils"
 )
 
-type RetrievePoolParameter struct {
+type RetrievePool struct {
 	poolName *string
 }
 
-func (parameter *RetrievePoolParameter) GetPoolName() string {
+func (parameter *RetrievePool) GetPoolName() string {
 	return utils.StringValue(parameter.poolName)
 }
 
-func (parameter *RetrievePoolParameter) SetPoolName(poolName string) {
+func (parameter *RetrievePool) SetPoolName(poolName string) {
 	parameter.poolName = utils.String(poolName)
 }
 
-func (parameter *RetrievePoolParameter) GetPath() string {
+func (parameter *RetrievePool) GetPath() string {
 	if parameter.poolName == nil {
 		panic("parameter poolName not set")
 	}

@@ -14,38 +14,45 @@ import (
 	"github.com/Vanishvei/fass-sdk-parameters/utils"
 )
 
-type ListVolumeParameter = listParameter
+type ListVolume = listParameter
 
-type ExpandVolumeParameter struct {
+type volumeParameter struct {
 	volumeName *string
-	capacity   *string
 }
 
-func (parameter *ExpandVolumeParameter) MarshalJSON() ([]byte, error) {
-	return json.Marshal(map[string]string{"capacity": *parameter.capacity})
-}
-
-func (parameter *ExpandVolumeParameter) GetVolumeName() string {
+func (parameter *volumeParameter) GetVolumeName() string {
 	return utils.StringValue(parameter.volumeName)
 }
 
-func (parameter *ExpandVolumeParameter) SetVolumeName(volumeName string) {
+func (parameter *volumeParameter) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *ExpandVolumeParameter) GetNewCapacity() string {
+type ExpandVolume struct {
+	volumeParameter
+	capacity *string
+}
+
+func (parameter *ExpandVolume) MarshalJSON() ([]byte, error) {
+	if parameter.capacity == nil {
+		panic("parameter capacity no set")
+	}
+	return json.Marshal(map[string]string{"capacity": *parameter.capacity})
+}
+
+func (parameter *ExpandVolume) GetNewCapacity() string {
 	return utils.StringValue(parameter.capacity)
 }
 
-func (parameter *ExpandVolumeParameter) SetNewCapacityGB(capacity int) {
+func (parameter *ExpandVolume) SetNewCapacityGB(capacity int) {
 	parameter.capacity = utils.String(fmt.Sprintf("%dg", capacity))
 }
 
-func (parameter *ExpandVolumeParameter) SetNewCapacityTB(capacity int) {
+func (parameter *ExpandVolume) SetNewCapacityTB(capacity int) {
 	parameter.capacity = utils.String(fmt.Sprintf("%dt", capacity))
 }
 
-func (parameter *ExpandVolumeParameter) GetPath() string {
+func (parameter *ExpandVolume) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
@@ -53,19 +60,11 @@ func (parameter *ExpandVolumeParameter) GetPath() string {
 	return fmt.Sprintf("volume/%s/expand", *parameter.volumeName)
 }
 
-type RetrieveVolumeParameter struct {
-	volumeName *string
+type RetrieveVolume struct {
+	volumeParameter
 }
 
-func (parameter *RetrieveVolumeParameter) GetVolumeName() string {
-	return utils.StringValue(parameter.volumeName)
-}
-
-func (parameter *RetrieveVolumeParameter) SetVolumeName(volumeName string) {
-	parameter.volumeName = utils.String(volumeName)
-}
-
-func (parameter *RetrieveVolumeParameter) GetPath() string {
+func (parameter *RetrieveVolume) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
@@ -73,64 +72,47 @@ func (parameter *RetrieveVolumeParameter) GetPath() string {
 	return fmt.Sprintf("volume/%s", *parameter.volumeName)
 }
 
-type DeleteVolumeParameter struct {
-	volumeName *string
-	isForce    *bool
+type DeleteVolume struct {
+	volumeParameter
+	isForce *bool
 }
 
-func (parameter *DeleteVolumeParameter) GetVolumeName() string {
-	return utils.StringValue(parameter.volumeName)
-}
-
-func (parameter *DeleteVolumeParameter) SetVolumeName(volumeName string) {
-	parameter.volumeName = utils.String(volumeName)
-}
-
-func (parameter *DeleteVolumeParameter) ForceDelete() {
+func (parameter *DeleteVolume) ForceDelete() {
 	parameter.isForce = utils.Bool(true)
 }
 
-func (parameter *DeleteVolumeParameter) GetPath() string {
+func (parameter *DeleteVolume) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
 	return fmt.Sprintf("volume/%s", *parameter.volumeName)
 }
 
-func (parameter *DeleteVolumeParameter) GetQuery() map[string]*string {
+func (parameter *DeleteVolume) GetQuery() map[string]*string {
 	if parameter.isForce == nil {
 		return map[string]*string{"is_force": utils.String("false")}
 	}
 	return map[string]*string{"is_force": utils.String("true")}
 }
 
-type FlattenVolumeParameter struct {
-	volumeName *string
+type FlattenVolume struct {
+	volumeParameter
 }
 
-func (parameter *FlattenVolumeParameter) GetVolumeName() string {
-	return utils.StringValue(parameter.volumeName)
-}
-
-func (parameter *FlattenVolumeParameter) SetVolumeName(volumeName string) {
-	parameter.volumeName = utils.String(volumeName)
-}
-
-func (parameter *FlattenVolumeParameter) GetPath() string {
+func (parameter *FlattenVolume) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
-
 	return fmt.Sprintf("volume/%s/flatten", *parameter.volumeName)
 }
 
-type SetQosOfVolumeParameter struct {
-	volumeName *string
-	iops       *int
-	bps        *int
+type SetQosOfVolume struct {
+	volumeParameter
+	iops *int
+	bps  *int
 }
 
-func (parameter *SetQosOfVolumeParameter) MarshalJSON() ([]byte, error) {
+func (parameter *SetQosOfVolume) MarshalJSON() ([]byte, error) {
 	_map := map[string]*int{}
 	if parameter.iops == nil {
 		panic("parameter iops no set")
@@ -144,31 +126,23 @@ func (parameter *SetQosOfVolumeParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(_map)
 }
 
-func (parameter *SetQosOfVolumeParameter) GetVolumeName() string {
-	return utils.StringValue(parameter.volumeName)
-}
-
-func (parameter *SetQosOfVolumeParameter) GetIOPS() int {
+func (parameter *SetQosOfVolume) GetIOPS() int {
 	return utils.IntValue(parameter.iops)
 }
 
-func (parameter *SetQosOfVolumeParameter) GetBPS() int {
+func (parameter *SetQosOfVolume) GetBPS() int {
 	return utils.IntValue(parameter.bps)
 }
 
-func (parameter *SetQosOfVolumeParameter) SetVolumeName(volumeName string) {
-	parameter.volumeName = utils.String(volumeName)
-}
-
-func (parameter *SetQosOfVolumeParameter) SetIops(iops int) {
+func (parameter *SetQosOfVolume) SetIops(iops int) {
 	parameter.iops = utils.Int(iops)
 }
 
-func (parameter *SetQosOfVolumeParameter) SetBpsMB(bps int) {
+func (parameter *SetQosOfVolume) SetBpsMB(bps int) {
 	parameter.bps = utils.Int(bps)
 }
 
-func (parameter *SetQosOfVolumeParameter) GetPath() string {
+func (parameter *SetQosOfVolume) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
@@ -180,14 +154,16 @@ type flattenVolume struct {
 	taskId *string
 }
 
-type GetFlattenVolumeProgress flattenVolume
-
-func (parameter *GetFlattenVolumeProgress) GetTaskId() string {
+func (parameter *flattenVolume) GetTaskId() string {
 	return utils.StringValue(parameter.taskId)
 }
 
-func (parameter *GetFlattenVolumeProgress) SetTaskId(taskId string) {
+func (parameter *flattenVolume) SetTaskId(taskId string) {
 	parameter.taskId = utils.String(taskId)
+}
+
+type GetFlattenVolumeProgress struct {
+	flattenVolume
 }
 
 func (parameter *GetFlattenVolumeProgress) GetPath() string {
@@ -197,17 +173,11 @@ func (parameter *GetFlattenVolumeProgress) GetPath() string {
 	return fmt.Sprintf("task/%s", *parameter.taskId)
 }
 
-type StopFlattenVolumeParameter flattenVolume
-
-func (parameter *StopFlattenVolumeParameter) GetTaskId() string {
-	return utils.StringValue(parameter.taskId)
+type StopFlattenVolume struct {
+	flattenVolume
 }
 
-func (parameter *StopFlattenVolumeParameter) SetTaskId(taskId string) {
-	parameter.taskId = utils.String(taskId)
-}
-
-func (parameter *StopFlattenVolumeParameter) GetPath() string {
+func (parameter *StopFlattenVolume) GetPath() string {
 	if parameter.taskId == nil {
 		panic("parameter taskId no set")
 	}

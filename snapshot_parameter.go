@@ -14,76 +14,48 @@ import (
 	"github.com/Vanishvei/fass-sdk-parameters/utils"
 )
 
-type ListSnapshotParameter struct {
+type ListSnapshot struct {
+	listParameter
 	volumeName *string
-	pageSize   *int
-	pageNum    *int
 }
 
-func (parameter *ListSnapshotParameter) GetVolumeName() string {
+func (parameter *ListSnapshot) GetVolumeName() string {
 	return utils.StringValue(parameter.volumeName)
 }
 
-func (parameter *ListSnapshotParameter) GetPageSize() int {
-	return utils.IntValue(parameter.pageSize)
-}
-
-func (parameter *ListSnapshotParameter) GetPageNum() int {
-	return utils.IntValue(parameter.pageNum)
-}
-
-func (parameter *ListSnapshotParameter) SetVolumeName(volumeName string) {
+func (parameter *ListSnapshot) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *ListSnapshotParameter) SetPageSize(pageSize int) {
-	parameter.pageSize = utils.Int(pageSize)
-}
-
-func (parameter *ListSnapshotParameter) SetPageNum(pageNum int) {
-	parameter.pageNum = utils.Int(pageNum)
-}
-
-func (parameter *ListSnapshotParameter) GetPath() string {
+func (parameter *ListSnapshot) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
 	return fmt.Sprintf("snapshot/%s", *parameter.volumeName)
 }
 
-func (parameter *ListSnapshotParameter) GetQuery() map[string]*int {
-	_map := map[string]*int{}
-	if parameter.pageSize != nil {
-		_map["page_size"] = parameter.pageSize
-	}
-	if parameter.pageNum != nil {
-		_map["page_num"] = parameter.pageNum
-	}
-	return _map
-}
-
-type RetrieveSnapshotParameter struct {
+type RetrieveSnapshot struct {
 	volumeName   *string
 	snapshotName *string
 }
 
-func (parameter *RetrieveSnapshotParameter) GetVolumeName() string {
+func (parameter *RetrieveSnapshot) GetVolumeName() string {
 	return utils.StringValue(parameter.volumeName)
 }
 
-func (parameter *RetrieveSnapshotParameter) GetSnapshotName() string {
+func (parameter *RetrieveSnapshot) GetSnapshotName() string {
 	return utils.StringValue(parameter.snapshotName)
 }
 
-func (parameter *RetrieveSnapshotParameter) SetVolumeName(volumeName string) {
+func (parameter *RetrieveSnapshot) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *RetrieveSnapshotParameter) SetSnapshotName(snapshotName string) {
+func (parameter *RetrieveSnapshot) SetSnapshotName(snapshotName string) {
 	parameter.snapshotName = utils.String(snapshotName)
 }
 
-func (parameter *RetrieveSnapshotParameter) GetPath() string {
+func (parameter *RetrieveSnapshot) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
@@ -95,28 +67,28 @@ func (parameter *RetrieveSnapshotParameter) GetPath() string {
 	return fmt.Sprintf("snapshot/%s/%s", *parameter.volumeName, *parameter.snapshotName)
 }
 
-type DeleteSnapshotParameter struct {
+type DeleteSnapshot struct {
 	volumeName   *string
 	snapshotName *string
 }
 
-func (parameter *DeleteSnapshotParameter) GetVolumeName() string {
+func (parameter *DeleteSnapshot) GetVolumeName() string {
 	return utils.StringValue(parameter.volumeName)
 }
 
-func (parameter *DeleteSnapshotParameter) GetSnapshotName() string {
+func (parameter *DeleteSnapshot) GetSnapshotName() string {
 	return utils.StringValue(parameter.volumeName)
 }
 
-func (parameter *DeleteSnapshotParameter) SetVolumeName(volumeName string) {
+func (parameter *DeleteSnapshot) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *DeleteSnapshotParameter) SetSnapshotName(snapshotName string) {
+func (parameter *DeleteSnapshot) SetSnapshotName(snapshotName string) {
 	parameter.snapshotName = utils.String(snapshotName)
 }
 
-func (parameter *DeleteSnapshotParameter) GetPath() string {
+func (parameter *DeleteSnapshot) GetPath() string {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
@@ -128,12 +100,12 @@ func (parameter *DeleteSnapshotParameter) GetPath() string {
 	return fmt.Sprintf("snapshot/%s/%s", *parameter.volumeName, *parameter.snapshotName)
 }
 
-type createDeleteSnapshotParameter struct {
+type createDeleteSnapshot struct {
 	volumeName   *string
 	snapshotName *string
 }
 
-func (parameter *createDeleteSnapshotParameter) MarshalJSON() ([]byte, error) {
+func (parameter *createDeleteSnapshot) MarshalJSON() ([]byte, error) {
 	if parameter.volumeName == nil {
 		panic("parameter volumeName no set")
 	}
@@ -148,22 +120,22 @@ func (parameter *createDeleteSnapshotParameter) MarshalJSON() ([]byte, error) {
 	})
 }
 
-func (parameter *createDeleteSnapshotParameter) GetVolumeName() string {
+func (parameter *createDeleteSnapshot) GetVolumeName() string {
 	return utils.StringValue(parameter.volumeName)
 }
 
-func (parameter *createDeleteSnapshotParameter) GetSnapshotName() string {
+func (parameter *createDeleteSnapshot) GetSnapshotName() string {
 	return utils.StringValue(parameter.volumeName)
 }
 
-func (parameter *createDeleteSnapshotParameter) SetVolumeName(volumeName string) {
+func (parameter *createDeleteSnapshot) SetVolumeName(volumeName string) {
 	parameter.volumeName = utils.String(volumeName)
 }
 
-func (parameter *createDeleteSnapshotParameter) SetSnapshotName(snapshotName string) {
+func (parameter *createDeleteSnapshot) SetSnapshotName(snapshotName string) {
 	parameter.snapshotName = utils.String(snapshotName)
 }
 
-type CreateSnapshotParameter = createDeleteSnapshotParameter
+type CreateSnapshot = createDeleteSnapshot
 
-type RevertSnapshotParameter = createDeleteSnapshotParameter
+type RevertSnapshot = createDeleteSnapshot
