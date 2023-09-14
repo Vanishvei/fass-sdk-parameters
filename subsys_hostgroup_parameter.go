@@ -52,11 +52,11 @@ func (parameter *SubsysBindHostGroup) GetPath() string {
 	return fmt.Sprintf("subsys/%s/host_group/bind", *parameter.subsysName)
 }
 
-type SubsysUnbindAuth struct {
+type SubsysUnbindHostGroup struct {
 	subsysParameter
 }
 
-func (parameter *SubsysUnbindAuth) GetPath() string {
+func (parameter *SubsysUnbindHostGroup) GetPath() string {
 	if parameter.subsysName == nil {
 		panic("parameter subsysName no set")
 	}

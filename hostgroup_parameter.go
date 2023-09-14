@@ -112,17 +112,17 @@ func (parameter *AddHostToHostGroup) MarshalJSON() ([]byte, error) {
 	return parameter.updateHostGroupParameter.MarshalJSON()
 }
 
-type RemoveQualifierFromGroup struct {
+type RemoveHostFromHostGroup struct {
 	updateHostGroupParameter
 }
 
-func (parameter *RemoveQualifierFromGroup) GetPath() string {
+func (parameter *RemoveHostFromHostGroup) GetPath() string {
 	if parameter.hostGroupName == nil {
 		panic("parameter hostGroupName no set")
 	}
 	return fmt.Sprintf("acl/host_group/%s/remove_hosts", *parameter.hostGroupName)
 }
 
-func (parameter *RemoveQualifierFromGroup) MarshalJSON() ([]byte, error) {
+func (parameter *RemoveHostFromHostGroup) MarshalJSON() ([]byte, error) {
 	return parameter.updateHostGroupParameter.MarshalJSON()
 }
