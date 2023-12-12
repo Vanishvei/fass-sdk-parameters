@@ -15,8 +15,7 @@ import (
 )
 
 var (
-	defaultSectorSize   = 4096
-	defaultShardingSize = "64G"
+	noSet = "no set"
 )
 
 type ListSubsys = listParameter
@@ -150,6 +149,8 @@ type CreateSubsys struct {
 	volumeName    *string
 	enableISCSI   *bool
 	enableNVMeoF  *bool
+	stripeShift   *string
+	stripeWidth   *int
 }
 
 func (parameter *CreateSubsys) MarshalJSON() ([]byte, error) {
@@ -211,10 +212,18 @@ func (parameter *CreateSubsys) MarshalJSON() ([]byte, error) {
 		_map["protocol_type"] = *parameter.protocolType
 	}
 
+	if parameter.stripeWidth != nil && parameter.stripeShift != nil {
+		_map["stripe_width"] = *parameter.stripeWidth
+		_map["stripe_shift"] = *parameter.stripeShift
+	}
+
 	return json.Marshal(_map)
 }
 
 func (parameter *CreateSubsys) GetSubsysName() string {
+	if parameter.name == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.name)
 }
 
@@ -226,18 +235,30 @@ func (parameter *CreateSubsys) GetVolumeName() string {
 }
 
 func (parameter *CreateSubsys) GetProtocolType() string {
+	if parameter.protocolType == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.protocolType)
 }
 
 func (parameter *CreateSubsys) GetFormatType() string {
+	if parameter.format == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.format)
 }
 
 func (parameter *CreateSubsys) GetPoolName() string {
+	if parameter.poolName == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.poolName)
 }
 
 func (parameter *CreateSubsys) GetCapacity() string {
+	if parameter.capacity == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.capacity)
 }
 
@@ -250,17 +271,21 @@ func (parameter *CreateSubsys) GetBPS() int {
 }
 
 func (parameter *CreateSubsys) GetSectorSize() int {
-	if parameter.sectorSize == nil {
-		return defaultSectorSize
-	}
 	return utils.IntValue(parameter.sectorSize)
 }
 
 func (parameter *CreateSubsys) GetSharding() string {
 	if parameter.shardingSize == nil {
-		return defaultShardingSize
+		return noSet
 	}
 	return utils.StringValue(parameter.sharding)
+}
+
+func (parameter *CreateSubsys) GetStripeWidthShift() (int, string) {
+	if parameter.stripeWidth != nil {
+		return utils.IntValue(parameter.stripeWidth), utils.StringValue(parameter.stripeShift)
+	}
+	return 0, noSet
 }
 
 func (parameter *CreateSubsys) SetName(subsysName string) {
@@ -317,6 +342,36 @@ func (parameter *CreateSubsys) SetSectorSize4096() {
 
 func (parameter *CreateSubsys) SetSharding(sharding int) {
 	parameter.shardingSize = utils.Int(sharding)
+}
+
+func (parameter *CreateSubsys) SetStripeWidth4Shift128k() {
+	parameter.stripeWidth = utils.Int(4)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsys) SetStripeWidth4Shift256k() {
+	parameter.stripeWidth = utils.Int(4)
+	parameter.stripeShift = utils.String("256k")
+}
+
+func (parameter *CreateSubsys) SetStripeWidth8Shift128k() {
+	parameter.stripeWidth = utils.Int(8)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsys) SetStripeWidth8Shift256k() {
+	parameter.stripeWidth = utils.Int(8)
+	parameter.stripeShift = utils.String("256k")
+}
+
+func (parameter *CreateSubsys) SetStripeWidth16Shift128k() {
+	parameter.stripeWidth = utils.Int(16)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsys) SetStripeWidth16Shift256k() {
+	parameter.stripeWidth = utils.Int(16)
+	parameter.stripeShift = utils.String("256k")
 }
 
 // ===========================================================================================================
@@ -390,14 +445,25 @@ func (parameter *CreateSubsysFromSnapshot) MarshalJSON() ([]byte, error) {
 		_map["protocol_type"] = *parameter.protocolType
 	}
 
+	if parameter.stripeShift != nil && parameter.stripeWidth != nil {
+		_map["stripe_width"] = *parameter.stripeWidth
+		_map["stripe_shift"] = *parameter.stripeShift
+	}
+
 	return json.Marshal(_map)
 }
 
 func (parameter *CreateSubsysFromSnapshot) GetPoolName() string {
+	if parameter.poolName == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.poolName)
 }
 
 func (parameter *CreateSubsysFromSnapshot) GetSubsysName() string {
+	if parameter.name == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.name)
 }
 
@@ -409,10 +475,16 @@ func (parameter *CreateSubsysFromSnapshot) GetVolumeName() string {
 }
 
 func (parameter *CreateSubsysFromSnapshot) GetSourceVolumeName() string {
+	if parameter.srcVolumeName == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.srcVolumeName)
 }
 
 func (parameter *CreateSubsysFromSnapshot) GetSourceSnapshotName() string {
+	if parameter.snapshotName == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.snapshotName)
 }
 
@@ -425,17 +497,21 @@ func (parameter *CreateSubsysFromSnapshot) GetBPS() int {
 }
 
 func (parameter *CreateSubsysFromSnapshot) GetSectorSize() int {
-	if parameter.sectorSize == nil {
-		return defaultSectorSize
-	}
 	return utils.IntValue(parameter.sectorSize)
 }
 
 func (parameter *CreateSubsysFromSnapshot) GetSharding() string {
 	if parameter.shardingSize == nil {
-		return defaultShardingSize
+		return noSet
 	}
 	return utils.StringValue(parameter.sharding)
+}
+
+func (parameter *CreateSubsysFromSnapshot) GetStripeWidthShift() (int, string) {
+	if parameter.stripeWidth != nil {
+		return utils.IntValue(parameter.stripeWidth), utils.StringValue(parameter.stripeShift)
+	}
+	return 0, noSet
 }
 
 func (parameter *CreateSubsysFromSnapshot) SetName(subsysName string) {
@@ -488,6 +564,36 @@ func (parameter *CreateSubsysFromSnapshot) SetSectorSize512() {
 
 func (parameter *CreateSubsysFromSnapshot) SetSectorSize4096() {
 	parameter.sectorSize = utils.Int(4096)
+}
+
+func (parameter *CreateSubsysFromSnapshot) SetStripeWidth4Shift128k() {
+	parameter.stripeWidth = utils.Int(4)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsysFromSnapshot) SetStripeWidth4Shift256k() {
+	parameter.stripeWidth = utils.Int(4)
+	parameter.stripeShift = utils.String("256k")
+}
+
+func (parameter *CreateSubsysFromSnapshot) SetStripeWidth8Shift128k() {
+	parameter.stripeWidth = utils.Int(8)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsysFromSnapshot) SetStripeWidth8Shift256k() {
+	parameter.stripeWidth = utils.Int(8)
+	parameter.stripeShift = utils.String("256k")
+}
+
+func (parameter *CreateSubsysFromSnapshot) SetStripeWidth16Shift128k() {
+	parameter.stripeWidth = utils.Int(16)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsysFromSnapshot) SetStripeWidth16Shift256k() {
+	parameter.stripeWidth = utils.Int(16)
+	parameter.stripeShift = utils.String("256k")
 }
 
 // ==============================================================================================================
@@ -558,14 +664,25 @@ func (parameter *CreateSubsysFromVolume) MarshalJSON() ([]byte, error) {
 		_map["sharding"] = *parameter.sharding
 	}
 
+	if parameter.stripeShift != nil && parameter.stripeWidth != nil {
+		_map["stripe_width"] = *parameter.stripeWidth
+		_map["stripe_shift"] = *parameter.stripeShift
+	}
+
 	return json.Marshal(_map)
 }
 
 func (parameter *CreateSubsysFromVolume) GetPoolName() string {
+	if parameter.poolName == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.poolName)
 }
 
 func (parameter *CreateSubsysFromVolume) GetSubsysName() string {
+	if parameter.name == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.name)
 }
 
@@ -577,14 +694,23 @@ func (parameter *CreateSubsysFromVolume) GetVolumeName() string {
 }
 
 func (parameter *CreateSubsysFromVolume) GetSourceVolumeName() string {
+	if parameter.srcVolumeName == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.srcVolumeName)
 }
 
 func (parameter *CreateSubsysFromVolume) GetSourceSnapshotName() string {
+	if parameter.snapshotName == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.snapshotName)
 }
 
 func (parameter *CreateSubsysFromVolume) GetProtocolType() string {
+	if parameter.protocolType == nil {
+		return noSet
+	}
 	return utils.StringValue(parameter.protocolType)
 }
 
@@ -598,9 +724,16 @@ func (parameter *CreateSubsysFromVolume) GetBPS() int {
 
 func (parameter *CreateSubsysFromVolume) GetSharding() string {
 	if parameter.shardingSize == nil {
-		return defaultShardingSize
+		return noSet
 	}
 	return utils.StringValue(parameter.sharding)
+}
+
+func (parameter *CreateSubsysFromVolume) GetStripeWidthShift() (int, string) {
+	if parameter.stripeWidth != nil {
+		return utils.IntValue(parameter.stripeWidth), utils.StringValue(parameter.stripeShift)
+	}
+	return 0, noSet
 }
 
 func (parameter *CreateSubsysFromVolume) SetName(subsysName string) {
@@ -650,4 +783,34 @@ func (parameter *CreateSubsysFromVolume) SetSectorSize512() {
 
 func (parameter *CreateSubsysFromVolume) SetSectorSize4096() {
 	parameter.sectorSize = utils.Int(4096)
+}
+
+func (parameter *CreateSubsysFromVolume) SetStripeWidth4Shift128k() {
+	parameter.stripeWidth = utils.Int(4)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsysFromVolume) SetStripeWidth4Shift256k() {
+	parameter.stripeWidth = utils.Int(4)
+	parameter.stripeShift = utils.String("256k")
+}
+
+func (parameter *CreateSubsysFromVolume) SetStripeWidth8Shift128k() {
+	parameter.stripeWidth = utils.Int(8)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsysFromVolume) SetStripeWidth8Shift256k() {
+	parameter.stripeWidth = utils.Int(8)
+	parameter.stripeShift = utils.String("256k")
+}
+
+func (parameter *CreateSubsysFromVolume) SetStripeWidth16Shift128k() {
+	parameter.stripeWidth = utils.Int(16)
+	parameter.stripeShift = utils.String("128k")
+}
+
+func (parameter *CreateSubsysFromVolume) SetStripeWidth16Shift256k() {
+	parameter.stripeWidth = utils.Int(16)
+	parameter.stripeShift = utils.String("256k")
 }
