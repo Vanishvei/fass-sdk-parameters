@@ -60,7 +60,7 @@ func (parameter *SubsysAddVLAN) GetPath() string {
 	if parameter.subsysName == nil {
 		panic("parameter subsysName no set")
 	}
-	return fmt.Sprintf("subsys/%s/chap/set", *parameter.subsysName)
+	return fmt.Sprintf("subsys/%s/vlan/add", *parameter.subsysName)
 }
 
 type SubsysRemoveVLAN struct {
@@ -71,5 +71,5 @@ func (parameter *SubsysRemoveVLAN) GetPath() string {
 	if parameter.subsysName == nil {
 		panic("parameter subsysName no set")
 	}
-	return fmt.Sprintf("subsys/%s/chap/remove", *parameter.subsysName)
+	return fmt.Sprintf("subsys/%s/vlan/remove", *parameter.subsysName)
 }
