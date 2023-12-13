@@ -41,7 +41,7 @@ func (parameter *subsysVLAN) MarshalJSON() ([]byte, error) {
 	if len(parameter.vlanList) == 0 {
 		panic("parameter vlan_list no set")
 	}
-	return json.Marshal(map[string]any{"vlan_list": utils.StringSliceValue(parameter.vlanList)})
+	return json.Marshal(map[string]interface{}{"vlan_list": utils.StringSliceValue(parameter.vlanList)})
 }
 
 func (parameter *subsysVLAN) GetVLANList() []string {
