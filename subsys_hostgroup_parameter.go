@@ -14,11 +14,11 @@ import (
 	"github.com/Vanishvei/fass-sdk-parameters/utils"
 )
 
-type RetrieveSubsysAuth struct {
+type RetrieveSubsysHostGroup struct {
 	subsysParameter
 }
 
-func (parameter *RetrieveSubsysAuth) GetPath() string {
+func (parameter *RetrieveSubsysHostGroup) GetPath() string {
 	if parameter.subsysName == nil {
 		panic("parameter subsysName no set")
 	}
