@@ -60,5 +60,5 @@ func (parameter *SubsysUnbindHostGroup) GetPath() string {
 	if parameter.subsysName == nil {
 		panic("parameter subsysName no set")
 	}
-	return fmt.Sprintf("subsys/%s/host_group/remove", *parameter.subsysName)
+	return fmt.Sprintf("subsys/%s/host_group/unbind", *parameter.subsysName)
 }
