@@ -53,10 +53,6 @@ func (parameter *subsysExportUnexportParameter) GetProtocolType() string {
 	return utils.StringValue(parameter.protocolType)
 }
 
-func (parameter *subsysExportUnexportParameter) MarshalJSON() ([]byte, error) {
-	return json.Marshal(map[string]*string{"protocol_type": parameter.protocolType})
-}
-
 type ExportSubsys subsysExportUnexportParameter
 
 func (parameter *ExportSubsys) ExportISCSI() {
@@ -72,6 +68,10 @@ func (parameter *ExportSubsys) GetPath() string {
 		panic("parameter subsysName no set")
 	}
 	return fmt.Sprintf(fmt.Sprintf("subsys/%s/export", *parameter.subsysName))
+}
+
+func (parameter *ExportSubsys) MarshalJSON() ([]byte, error) {
+	return json.Marshal(map[string]*string{"protocol_type": parameter.protocolType})
 }
 
 type UnexportSubsys subsysExportUnexportParameter
