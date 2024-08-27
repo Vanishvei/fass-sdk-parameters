@@ -11,36 +11,48 @@ import (
 	"strconv"
 
 	"github.com/Vanishvei/fass-sdk-parameters/utils"
+	"github.com/google/uuid"
 )
 
 type listParameter struct {
-	pageSize *int
-	pageNum  *int
+	Token    *string `form:"token"`
+	PageSize *int    `form:"page_size"`
+	PageNum  *int    `form:"page_num"`
 }
 
 func (parameter *listParameter) SetPageSize(pageSize int) {
-	parameter.pageSize = utils.Int(pageSize)
+	parameter.PageSize = utils.Int(pageSize)
 }
 
 func (parameter *listParameter) SetPageNum(pageNum int) {
-	parameter.pageNum = utils.Int(pageNum)
+	parameter.PageNum = utils.Int(pageNum)
+}
+
+func (parameter *listParameter) SetPageToken(token uuid.UUID) {
+	parameter.Token = utils.String(token.String())
 }
 
 func (parameter *listParameter) GetPageSize() int {
-	return utils.IntValue(parameter.pageSize)
+	return utils.IntValue(parameter.PageSize)
 }
 
 func (parameter *listParameter) GetPageNum() int {
-	return utils.IntValue(parameter.pageNum)
+	return utils.IntValue(parameter.PageNum)
 }
 
 func (parameter *listParameter) GetQuery() map[string]*string {
-	defaultPageNum := 1
-	defaultPageSize := 20
-	pageNum := strconv.Itoa(*utils.DefaultNumber(parameter.pageNum, utils.Int(defaultPageNum)))
-	pageSize := strconv.Itoa(*utils.DefaultNumber(parameter.pageSize, utils.Int(defaultPageSize)))
-	return map[string]*string{
-		"page_num":  utils.String(pageNum),
-		"page_size": utils.String(pageSize),
+	params := map[string]*string{}
+	if parameter.PageNum != nil {
+		params["page_num"] = utils.String(strconv.Itoa(*utils.Int(*parameter.PageNum)))
 	}
+
+	if parameter.PageSize != nil {
+		params["page_size"] = utils.String(strconv.Itoa(*utils.Int(*parameter.PageSize)))
+	}
+
+	if parameter.Token != nil {
+		params["token"] = parameter.Token
+	}
+
+	return params
 }
