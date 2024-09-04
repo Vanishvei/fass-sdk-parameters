@@ -28,17 +28,6 @@ func (parameter *hostGroupParameter) SetHostGroupName(hostGroupName string) {
 	parameter.hostGroupName = utils.String(hostGroupName)
 }
 
-type ListSubsysOfHostGroup struct {
-	hostGroupParameter
-}
-
-func (parameter *ListSubsysOfHostGroup) GetPath() string {
-	if parameter.hostGroupName == nil {
-		panic("parameter hostGroupName no set")
-	}
-	return fmt.Sprintf("acl/host_group/%s/subsys", *parameter.hostGroupName)
-}
-
 type DeleteHostGroup struct {
 	hostGroupParameter
 }
